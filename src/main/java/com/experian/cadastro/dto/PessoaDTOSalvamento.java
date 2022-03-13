@@ -1,18 +1,9 @@
-package com.experian.cadastro.entities;
+package com.experian.cadastro.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.experian.cadastro.entities.Pessoa;
 
-@Entity
-@Table(name = "pessoa")
-public class Pessoa {
+public class PessoaDTOSalvamento {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String nome;
     private String telefone;
     private Integer idade;
@@ -20,20 +11,16 @@ public class Pessoa {
     private String estado;
     private Integer score;
 
-    public Pessoa() {
+    public PessoaDTOSalvamento() {
     }
 
-    public Pessoa(String nome, String telefone, Integer idade, String cidade, String estado, Integer score) {
-        this.nome = nome;
-        this.telefone = telefone;
-        this.idade = idade;
-        this.cidade = cidade;
-        this.estado = estado;
-        this.score = score;
-    }
-
-    public Long getId() {
-        return id;
+    public PessoaDTOSalvamento(Pessoa pessoa) {
+        this.nome = pessoa.getNome();
+        this.telefone = pessoa.getTelefone();
+        this.idade = pessoa.getIdade();
+        this.cidade = pessoa.getCidade();
+        this.estado = pessoa.getEstado();
+        this.score = pessoa.getScore();
     }
 
     public String getNome() {
