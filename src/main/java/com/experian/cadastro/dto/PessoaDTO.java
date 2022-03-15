@@ -3,24 +3,26 @@ package com.experian.cadastro.dto;
 import com.experian.cadastro.entities.Pessoa;
 import com.experian.cadastro.enums.Score;
 
-public class PessoaDTOIndividual {
+import java.io.Serializable;
+
+public class PessoaDTO implements Serializable {
 
     private String nome;
     private String telefone;
     private Integer idade;
     private String scoreDescricao;
 
-    public PessoaDTOIndividual() {
+    public PessoaDTO() {
     }
 
-    public PessoaDTOIndividual(Pessoa pessoa, Score score) {
+    public PessoaDTO(Pessoa pessoa, Score score) {
         this.nome = pessoa.getNome();
         this.telefone = pessoa.getTelefone();
         this.idade = pessoa.getIdade();
         this.scoreDescricao = score.getDescricao();
     }
 
-    public PessoaDTOIndividual(String nome, String telefone, Integer idade, String scoreDescricao) {
+    public PessoaDTO(String nome, String telefone, Integer idade, String scoreDescricao) {
         this.nome = nome;
         this.telefone = telefone;
         this.idade = idade;

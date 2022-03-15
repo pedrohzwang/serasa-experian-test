@@ -20,10 +20,10 @@ public class Pessoa {
     private String estado;
     private Integer score;
 
-    public Pessoa() {
-    }
+    public Pessoa() {}
 
-    public Pessoa(String nome, String telefone, Integer idade, String cidade, String estado, Integer score) {
+    public Pessoa(Long id, String nome, String telefone, Integer idade, String cidade, String estado, Integer score) {
+        this.id = id;
         this.nome = nome;
         this.telefone = telefone;
         this.idade = idade;

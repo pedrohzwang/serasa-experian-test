@@ -1,10 +1,10 @@
 package com.experian.cadastro.enums;
 
 public enum Score {
-    INSUFICIENTE ("Insuficiente"),
-    INACEITAVEL ("Inaceitável"),
-    ACEITAVEL ("Aceitável"),
-    RECOMENDAVEL ("Recomendável");
+    INSUFICIENTE("Insuficiente"),
+    INACEITAVEL("Inaceitável"),
+    ACEITAVEL("Aceitável"),
+    RECOMENDAVEL("Recomendável");
 
     private String descricao;
 

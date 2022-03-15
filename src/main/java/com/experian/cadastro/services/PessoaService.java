@@ -1,12 +1,12 @@
 package com.experian.cadastro.services;
 
-import com.experian.cadastro.dto.PessoaDTOIndividual;
-import com.experian.cadastro.dto.PessoaDTOLista;
-import com.experian.cadastro.dto.PessoaDTOSalvamento;
+import com.experian.cadastro.dto.PessoaDTO;
+import com.experian.cadastro.dto.PessoaDTOListarTodos;
+import com.experian.cadastro.dto.PessoaDTOSalvar;
 import com.experian.cadastro.entities.Pessoa;
 import com.experian.cadastro.enums.Score;
 import com.experian.cadastro.repositories.PessoaRepository;
-import com.experian.cadastro.services.exceptions.ResourceNotFoundException;
+import com.experian.cadastro.services.exceptions.RecursoNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,43 +22,44 @@ public class PessoaService {
     PessoaRepository repository;
 
     @Transactional(readOnly = true)
-    public List<PessoaDTOLista> listarTodos() {
-        List<Pessoa> pessoas = repository.findAll();
+    public List<PessoaDTOListarTodos> listarTodos() {
+        List<Pessoa> pessoasLista = repository.findAll();
 
-        return pessoas.stream().map(pessoa ->
-                new PessoaDTOLista(pessoa, gerarScoreDescricao(pessoa.getScore()))).collect(Collectors.toList());
+        return pessoasLista.stream().map(pessoa ->
+                new PessoaDTOListarTodos(pessoa, gerarDescricaoScore(pessoa.getScore()))).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public PessoaDTOIndividual getPessoaPorId(Long id) {
-        Optional<Pessoa> registro = repository.findById(id);
-        Pessoa entidade = registro.orElseThrow(() -> new ResourceNotFoundException("Registro não encontrado!"));
-        return new PessoaDTOIndividual(entidade, gerarScoreDescricao(entidade.getScore()));
+    public PessoaDTO buscarPorId(Long id) {
+        Optional<Pessoa> optional = repository.findById(id);
+        Pessoa entidade = optional.orElseThrow(() -> new RecursoNaoEncontradoException("Recurso não encontrado!"));
+        return new PessoaDTO(entidade, gerarDescricaoScore(entidade.getScore()));
     }
 
-    public Score gerarScoreDescricao(Integer score) {
-        Score scoreDescription;
+    public Score gerarDescricaoScore(Integer score) {
+        Score descricaoScore;
         if (score <= 200) {
-            scoreDescription = Score.INSUFICIENTE;
+            descricaoScore = Score.INSUFICIENTE;
         } else if (score >= 201 && score <= 500) {
-            scoreDescription = Score.INACEITAVEL;
+            descricaoScore = Score.INACEITAVEL;
         } else if (score >= 501 && score <= 700) {
-            scoreDescription = Score.ACEITAVEL;
+            descricaoScore = Score.ACEITAVEL;
         } else {
-            scoreDescription = Score.RECOMENDAVEL;
+            descricaoScore = Score.RECOMENDAVEL;
         }
 
-        return scoreDescription;
+        return descricaoScore;
     }
 
     @Transactional
-    public PessoaDTOSalvamento cadastrarPessoa(PessoaDTOSalvamento dto) {
+    public PessoaDTOSalvar salvarPessoa(PessoaDTOSalvar dto) {
         Pessoa entidade = new Pessoa();
         copiarDTOParaEntidade(dto, entidade);
-        return new PessoaDTOSalvamento(repository.save(entidade));
+        entidade = repository.save(entidade);
+        return new PessoaDTOSalvar(entidade);
     }
 
-    private void copiarDTOParaEntidade(PessoaDTOSalvamento dto, Pessoa entidade) {
+    private void copiarDTOParaEntidade(PessoaDTOSalvar dto, Pessoa entidade) {
         entidade.setNome(dto.getNome());
         entidade.setIdade(dto.getIdade());
         entidade.setTelefone(dto.getTelefone());

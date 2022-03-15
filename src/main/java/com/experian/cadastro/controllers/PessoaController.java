@@ -1,9 +1,8 @@
 package com.experian.cadastro.controllers;
 
-import com.experian.cadastro.dto.PessoaDTOIndividual;
-import com.experian.cadastro.dto.PessoaDTOLista;
-import com.experian.cadastro.dto.PessoaDTOSalvamento;
-import com.experian.cadastro.entities.Pessoa;
+import com.experian.cadastro.dto.PessoaDTO;
+import com.experian.cadastro.dto.PessoaDTOListarTodos;
+import com.experian.cadastro.dto.PessoaDTOSalvar;
 import com.experian.cadastro.services.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/pessoa")
@@ -26,8 +24,8 @@ public class PessoaController {
     PessoaService service;
 
     @GetMapping
-    public ResponseEntity<List<PessoaDTOLista>> listarTodos() {
-        List<PessoaDTOLista> pessoas = service.listarTodos();
+    public ResponseEntity<List<PessoaDTOListarTodos>> listarTodos() {
+        List<PessoaDTOListarTodos> pessoas = service.listarTodos();
         if (pessoas.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -36,14 +34,14 @@ public class PessoaController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<PessoaDTOIndividual> getPessoaPorId(@PathVariable Long id) {
-        PessoaDTOIndividual pessoa = service.getPessoaPorId(id);
+    public ResponseEntity<PessoaDTO> buscarPessoaPorId(@PathVariable Long id) {
+        PessoaDTO pessoa = service.buscarPorId(id);
         return ResponseEntity.ok(pessoa);
     }
 
     @PostMapping
-    public ResponseEntity<PessoaDTOSalvamento> cadastrarPessoa(@RequestBody PessoaDTOSalvamento dto) {
-        service.cadastrarPessoa(dto);
+    public ResponseEntity<PessoaDTOSalvar> cadastrarPessoa(@RequestBody PessoaDTOSalvar dto) {
+        service.salvarPessoa(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

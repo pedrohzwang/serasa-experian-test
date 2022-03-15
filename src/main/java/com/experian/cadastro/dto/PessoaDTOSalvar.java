@@ -2,7 +2,9 @@ package com.experian.cadastro.dto;
 
 import com.experian.cadastro.entities.Pessoa;
 
-public class PessoaDTOSalvamento {
+import java.io.Serializable;
+
+public class PessoaDTOSalvar implements Serializable {
 
     private String nome;
     private String telefone;
@@ -11,10 +13,19 @@ public class PessoaDTOSalvamento {
     private String estado;
     private Integer score;
 
-    public PessoaDTOSalvamento() {
+    public PessoaDTOSalvar() {
     }
 
-    public PessoaDTOSalvamento(Pessoa pessoa) {
+    public PessoaDTOSalvar(String nome, String telefone, Integer idade, String cidade, String estado, Integer score) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.idade = idade;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.score = score;
+    }
+
+    public PessoaDTOSalvar(Pessoa pessoa) {
         this.nome = pessoa.getNome();
         this.telefone = pessoa.getTelefone();
         this.idade = pessoa.getIdade();
